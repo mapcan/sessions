@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/gob"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 )
@@ -135,8 +136,10 @@ func (s *Registry) Get(store Store, name string) (session *Session, err error) {
 	}
 	if info, ok := s.sessions[name]; ok {
 		session, err = info.s, info.e
+		log.Printf("Get session: %s, err: %s", session, err)
 	} else {
 		session, err = store.New(s.request, name)
+		log.Printf("Get session: %s, err: %s", session, err)
 		session.name = name
 		s.sessions[name] = sessionInfo{s: session, e: err}
 	}
